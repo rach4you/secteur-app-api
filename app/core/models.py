@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
-
+from django.conf import settings
 
 class UserManager(BaseUserManager):
 
@@ -37,3 +37,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+class Entreprise(models.Model):
+    """Tag to be used for a recipe"""
+    class Meta:
+        db_table = 'entreprises'
+
+    raison_sociale = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.raison_sociale
