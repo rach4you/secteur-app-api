@@ -10,7 +10,7 @@ from formulaire import serializers
 class EntrepriseViewSet(viewsets.GenericViewSet,
                  mixins.ListModelMixin,
                  mixins.CreateModelMixin):
-    """Manage tags in the database"""
+    """Manage Entreprises in the database"""
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = Entreprise.objects.all()
@@ -21,14 +21,14 @@ class EntrepriseViewSet(viewsets.GenericViewSet,
         return queryset
 
     def perform_create(self, serializer):
-        """Create a new ingredient"""
+        """Create a new Entreprise"""
         serializer.save()
 
 
 class OperateurViewSet(viewsets.GenericViewSet,
                  mixins.ListModelMixin,
                  mixins.CreateModelMixin):
-    """Manage tags in the database"""
+    """Manage operateurs in the database"""
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     queryset = Operateur.objects.all()
@@ -39,5 +39,5 @@ class OperateurViewSet(viewsets.GenericViewSet,
         return queryset
 
     def perform_create(self, serializer):
-        """Create a new ingredient"""
+        """Create a new operateur"""
         serializer.save()

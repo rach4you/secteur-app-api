@@ -4,7 +4,7 @@ from core.models import Entreprise, Operateur
 
 
 class EntrepriseSerializer(serializers.ModelSerializer):
-    """Serializer for tag object"""
+    """Serializer for Entreprise object"""
 
     class Meta:
         model = Entreprise
@@ -12,7 +12,7 @@ class EntrepriseSerializer(serializers.ModelSerializer):
         read_only_Fields = ('id',)
 
 class OperateurSerializer(serializers.ModelSerializer):
-    """Serializer for tag object"""
+    """Serializer for Operateur object"""
 
     class Meta:
         model = Operateur

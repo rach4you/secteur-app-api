@@ -39,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
 class Entreprise(models.Model):
-    """Tag to be used for a recipe"""
+    """Entreprise to be used for a recipe"""
     class Meta:
         db_table = 'entreprises'
 
@@ -49,6 +49,7 @@ class Entreprise(models.Model):
         return self.raison_sociale
 
 class Operateur(models.Model):
+
     class Meta:
         db_table = 'operateurs'
     operateur = models.CharField(max_length=300)

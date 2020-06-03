@@ -39,8 +39,8 @@ class PrivateOperateursApiTests(TestCase):
 
     def test_retrieve_operateurs(self):
         """Test retrieving operateurs"""
-        Operateur.objects.create(operateur='Empressa')
-        Operateur.objects.create(operateur='Renault')
+        Operateur.objects.create(operateur='Operateur1')
+        Operateur.objects.create(operateur='Operateur2')
 
         res = self.client.get(OPERATEURS_URL)
 
