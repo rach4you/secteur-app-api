@@ -56,3 +56,23 @@ class Operateur(models.Model):
 
     def __str__(self):
         return f"{self.operateur}"
+
+
+class Devise(models.Model):
+
+    class Meta:
+        db_table = 'devises'
+
+    devise = models.CharField(max_length=300)
+    def __str__(self):
+        return f"{self.devise}"
+
+
+class Secteur(models.Model):
+
+    class Meta:
+        db_table = 'secteurs'
+    secteur = models.CharField(max_length=300)
+
+    def __str__(self):
+        return f"{self.secteur}"

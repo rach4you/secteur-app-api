@@ -32,3 +32,5 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Entreprise)
 admin.site.register(models.Operateur)
+admin.site.register(models.Secteur)
+admin.site.register(models.Devise)

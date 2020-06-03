@@ -59,3 +59,19 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(operateur), operateur.operateur)
+
+    def test_secteur_str(self):
+        """Test the secteur string representation"""
+        secteur = models.Secteur.objects.create(
+            secteur='Secteur1'
+        )
+
+        self.assertEqual(str(secteur), secteur.secteur)
+
+    def test_devise_str(self):
+        """Test the devise string representation"""
+        devise = models.Devise.objects.create(
+            devise='MAD'
+        )
+
+        self.assertEqual(str(devise), devise.devise)

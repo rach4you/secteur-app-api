@@ -2,7 +2,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import Entreprise, Operateur
+from core.models import Entreprise, Operateur, Secteur, Devise
 
 from formulaire import serializers
 
@@ -40,4 +40,40 @@ class OperateurViewSet(viewsets.GenericViewSet,
 
     def perform_create(self, serializer):
         """Create a new operateur"""
+        serializer.save()
+
+
+class SecteurViewSet(viewsets.GenericViewSet,
+                 mixins.ListModelMixin,
+                 mixins.CreateModelMixin):
+    """Manage Secteurs in the database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = Secteur.objects.all()
+    serializer_class = serializers.SecteurSerializer
+
+    def get_queryset(self):
+        queryset = Secteur.objects.all().order_by("-secteur")
+        return queryset
+
+    def perform_create(self, serializer):
+        """Create a new Secteur"""
+        serializer.save()
+
+
+class DeviseViewSet(viewsets.GenericViewSet,
+                 mixins.ListModelMixin,
+                 mixins.CreateModelMixin):
+    """Manage Devise in the database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = Devise.objects.all()
+    serializer_class = serializers.DeviseSerializer
+
+    def get_queryset(self):
+        queryset = Devise.objects.all().order_by("-devise")
+        return queryset
+
+    def perform_create(self, serializer):
+        """Create a new Devise"""
         serializer.save()
