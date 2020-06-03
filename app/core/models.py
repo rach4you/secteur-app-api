@@ -43,7 +43,15 @@ class Entreprise(models.Model):
     class Meta:
         db_table = 'entreprises'
 
-    raison_sociale = models.CharField(max_length=255)
+    raison_sociale = models.CharField(max_length=300)
 
     def __str__(self):
         return self.raison_sociale
+
+class Operateur(models.Model):
+    class Meta:
+        db_table = 'operateurs'
+    operateur = models.CharField(max_length=300)
+
+    def __str__(self):
+        return f"{self.operateur}"

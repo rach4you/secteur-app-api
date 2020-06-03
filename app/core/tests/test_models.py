@@ -45,9 +45,17 @@ class ModelTests(TestCase):
         self.assertTrue(user.is_staff)
 
     def test_entreprise_str(self):
-        """Test the tag string representation"""
+        """Test the entreprise string representation"""
         entreprise = models.Entreprise.objects.create(
             raison_sociale='Empressa'
         )
 
         self.assertEqual(str(entreprise), entreprise.raison_sociale)
+
+    def test_operateur_str(self):
+        """Test the operateur string representation"""
+        operateur = models.Operateur.objects.create(
+            operateur='Operateur1'
+        )
+
+        self.assertEqual(str(operateur), operateur.operateur)

@@ -20,14 +20,14 @@ class PublicEntreprisesApiTests(TestCase):
         self.client = APIClient()
 
     def test_login_required(self):
-        """Test that login required for retrieving tags"""
+        """Test that login required for retrieving Entreprises"""
         res = self.client.get(ENTREPRISES_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateTagsApiTests(TestCase):
-    """Test the authorized user tags API"""
+class PrivateEntreprisesApiTests(TestCase):
+    """Test the authorized user Entreprises API"""
 
     def setUp(self):
         self.user = get_user_model().objects.create_user(
@@ -50,7 +50,7 @@ class PrivateTagsApiTests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
     def test_create_entreprise_successful(self):
-        """Test creating a new tag"""
+        """Test creating a new Entreprise"""
         payload = {'raison_sociale': 'Empressa'}
         self.client.post(ENTREPRISES_URL, payload)
 

@@ -6,6 +6,7 @@ from formulaire import views
 
 router = DefaultRouter()
 router.register('entreprises', views.EntrepriseViewSet)
+router.register('operateurs', views.OperateurViewSet)
 
 app_name = 'formulaire'
 
