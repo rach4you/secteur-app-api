@@ -7,7 +7,9 @@ from core.models import Entreprise
 from formulaire import serializers
 
 
-class EntrepriseViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+class EntrepriseViewSet(viewsets.GenericViewSet,
+                 mixins.ListModelMixin,
+                 mixins.CreateModelMixin):
     """Manage tags in the database"""
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -17,3 +19,7 @@ class EntrepriseViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     def get_queryset(self):
         queryset = Entreprise.objects.all().order_by("-raison_sociale")
         return queryset
+
+    def perform_create(self, serializer):
+        """Create a new ingredient"""
+        serializer.save()
