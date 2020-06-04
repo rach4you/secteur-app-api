@@ -2,7 +2,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module
 
 from formulaire import serializers
 
@@ -126,6 +126,26 @@ class FormulaireViewSet(viewsets.ModelViewSet):
         """Return objects for the current authenticated user only"""
         return self.queryset.filter(user=self.request.user).order_by('-code')
 
+    def get_serializer_class(self):
+        """Return appropriate serializer class"""
+        if self.action == 'retrieve':
+            return serializers.FormulaireDetailSerializer
+
+        return self.serializer_class
+
     def perform_create(self, serializer):
         """Create a new formulaire"""
         serializer.save(user=self.request.user)
+
+
+class ModuleViewSet(viewsets.ModelViewSet):
+    """Manage Formulaire in the database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = Module.objects.all()
+    serializer_class = serializers.ModuleSerializer
+
+    def get_queryset(self):
+        queryset = Module.objects.all().order_by("-id")
+        return queryset
+

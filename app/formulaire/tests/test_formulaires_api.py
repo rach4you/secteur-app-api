@@ -5,13 +5,16 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Formulaire, Entreprise, Secteur, Filiere, Operateur, Devise
+from core.models import Formulaire, Entreprise, Secteur, Filiere, Operateur, Devise, Module
 
-from formulaire.serializers import FormulaireSerializer
+from formulaire.serializers import FormulaireSerializer, FormulaireDetailSerializer
 
 
 FORMULAIRES_URL = reverse('formulaire:formulaire-list')
 
+def detail_url(formulaire_id):
+    """Return formulaire detail URL"""
+    return reverse('formulaire:formulaire-detail', args=[formulaire_id])
 
 
 
@@ -60,6 +63,10 @@ def sample_formulaire(user, **params):
     defaults.update(params)
 
     return Formulaire.objects.create(user=user, **defaults)
+
+def sample_module(formulaire, module='Français', horaire=10):
+    """Create and return a sample ingredient"""
+    return Module.objects.create(formulaire=formulaire, module=module, horaire=horaire)
 
 class PublicFormulaireApiTests(TestCase):
     """Test unauthenticated Formulaire API access"""
@@ -112,4 +119,15 @@ class PrivateFormulaireApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data, serializer.data)
-        
+
+    def test_view_recipe_detail(self):
+        """Test viewing a recipe detail"""
+        formulaire = sample_formulaire(user=self.user)
+        formulaire.modules.add(sample_module(formulaire=formulaire))
+
+
+        url = detail_url(formulaire.id)
+        res = self.client.get(url)
+
+        serializer = FormulaireDetailSerializer(formulaire)
+        self.assertEqual(res.data, serializer.data)

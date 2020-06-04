@@ -123,3 +123,14 @@ class Formulaire(models.Model):
     )
     def __str__(self):
         return f"{self.code}"
+
+class Module(models.Model):
+    class Meta:
+        db_table = 'modules'
+
+    module = models.CharField(max_length=300)
+    horaire = models.IntegerField(default=0)
+    formulaire = models.ForeignKey(Formulaire, on_delete=models.CASCADE, related_name="modules")
+
+    def __str__(self):
+        return f"{self.formulaire}"

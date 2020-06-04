@@ -12,6 +12,7 @@ router.register('secteurs', views.SecteurViewSet)
 router.register('filieres', views.FiliereViewSet)
 router.register('credit_alloues', views.CreditAlloueViewSet)
 router.register('devises', views.DeviseViewSet)
+router.register('modules', views.ModuleViewSet)
 
 app_name = 'formulaire'
 
