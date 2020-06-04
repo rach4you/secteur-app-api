@@ -2,7 +2,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import Entreprise, Operateur, Secteur, Devise
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue
 
 from formulaire import serializers
 
@@ -76,4 +76,39 @@ class DeviseViewSet(viewsets.GenericViewSet,
 
     def perform_create(self, serializer):
         """Create a new Devise"""
+        serializer.save()
+
+class FiliereViewSet(viewsets.GenericViewSet,
+                 mixins.ListModelMixin,
+                 mixins.CreateModelMixin):
+    """Manage Filiere in the database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = Filiere.objects.all()
+    serializer_class = serializers.FiliereSerializer
+
+    def get_queryset(self):
+        queryset = Filiere.objects.all().order_by("-id")
+        return queryset
+
+    def perform_create(self, serializer):
+        """Create a new Filiere"""
+        serializer.save()
+
+
+class CreditAlloueViewSet(viewsets.GenericViewSet,
+                 mixins.ListModelMixin,
+                 mixins.CreateModelMixin):
+    """Manage Filiere in the database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = CreditAlloue.objects.all()
+    serializer_class = serializers.CreditAlloueSerializer
+
+    def get_queryset(self):
+        queryset = CreditAlloue.objects.all().order_by("-id")
+        return queryset
+
+    def perform_create(self, serializer):
+        """Create a new Filiere"""
         serializer.save()

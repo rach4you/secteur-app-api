@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from core import models
-
+from rest_framework.generics import get_object_or_404
 
 def sample_user(email='test@anapec.org', password='testpass'):
     """Create a sample user"""
@@ -75,3 +75,27 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(devise), devise.devise)
+
+    def test_filiere_str(self):
+        """Test the filiere string representation"""
+        filiere = models.Filiere.objects.create(
+            secteur=models.Secteur.objects.create(
+                     secteur='Offshoring'),
+            filiere='Management'
+        )
+
+        self.assertEqual(str(filiere), filiere.filiere)
+
+    def test_credit_alloue_str(self):
+        """Test the filiere string representation"""
+        credit_alloue = models.CreditAlloue.objects.create(
+            filiere=models.Filiere.objects.create(
+                secteur=models.Secteur.objects.create(
+                    secteur='Offshoring'),
+                filiere='Management'
+            ),
+            fe=30000,
+            fc=30000
+        )
+
+        self.assertEqual(str(credit_alloue), credit_alloue.filiere.filiere)

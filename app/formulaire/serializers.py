@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Entreprise, Operateur, Secteur, Devise
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue
 
 
 class EntrepriseSerializer(serializers.ModelSerializer):
@@ -28,6 +28,19 @@ class SecteurSerializer(serializers.ModelSerializer):
         fields = ('id', 'secteur')
         read_only_Fields = ('id',)
 
+class FiliereSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Filiere
+        fields = ("id", "filiere","secteur")
+        read_only_Fields = ('id',)
+
+class CreditAlloueSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CreditAlloue
+        fields = ("id", "filiere","fe","fc")
+        read_only_Fields = ('id',)
 
 class DeviseSerializer(serializers.ModelSerializer):
     """Serializer for Devise object"""

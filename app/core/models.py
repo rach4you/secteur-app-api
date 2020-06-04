@@ -76,3 +76,25 @@ class Secteur(models.Model):
 
     def __str__(self):
         return f"{self.secteur}"
+
+class Filiere(models.Model):
+
+    class Meta:
+        db_table = 'filieres'
+    filiere = models.CharField(max_length=300)
+    secteur = models.ForeignKey(Secteur,
+                              on_delete=models.CASCADE,
+                              related_name="filieres")
+    def __str__(self):
+        return f"{self.filiere}"
+
+class CreditAlloue(models.Model):
+    class Meta:
+        db_table = 'credit_alloues'
+    fe = models.IntegerField()
+    fc = models.IntegerField()
+    filiere = models.ForeignKey(Filiere,
+                                on_delete=models.DO_NOTHING,
+                                related_name="credit_alloue")
+    def __str__(self):
+        return f"{self.filiere}"
