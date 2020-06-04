@@ -120,8 +120,8 @@ class PrivateFormulaireApiTests(TestCase):
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data, serializer.data)
 
-    def test_view_recipe_detail(self):
-        """Test viewing a recipe detail"""
+    def test_view_formulaire_detail(self):
+        """Test viewing a formulaire detail"""
         formulaire = sample_formulaire(user=self.user)
         formulaire.modules.add(sample_module(formulaire=formulaire))
 
