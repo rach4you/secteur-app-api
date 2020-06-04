@@ -113,9 +113,9 @@ class CreditAlloueViewSet(viewsets.GenericViewSet,
         """Create a new Filiere"""
         serializer.save()
 
-class FormulaireViewSet(viewsets.GenericViewSet,
-                 mixins.ListModelMixin,
-                 mixins.CreateModelMixin):
+
+
+class FormulaireViewSet(viewsets.ModelViewSet):
     """Manage Formulaire in the database"""
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
