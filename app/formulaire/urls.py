@@ -13,9 +13,12 @@ router.register('filieres', views.FiliereViewSet)
 router.register('credit_alloues', views.CreditAlloueViewSet)
 router.register('devises', views.DeviseViewSet)
 router.register('modules', views.ModuleViewSet)
+router.register('beneficiaires', views.BeneficiaireViewSet)
 
 app_name = 'formulaire'
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path("<int:formulaire_pk>/module/", views.ModuleCreateAPIView.as_view(), name="module-list"),
+    path("formulaires/all", views.AllFormulairesListAPIView.as_view(), name="formulaires-list"),
 ]

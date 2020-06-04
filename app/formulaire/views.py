@@ -1,8 +1,9 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, generics
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import get_object_or_404
 
-from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire
 
 from formulaire import serializers
 
@@ -149,3 +150,34 @@ class ModuleViewSet(viewsets.ModelViewSet):
         queryset = Module.objects.all().order_by("-id")
         return queryset
 
+class ModuleCreateAPIView(generics.CreateAPIView):
+    queryset = Module.objects.all()
+    serializer_class = serializers.ModuleSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def perform_create(self, serializer):
+        formulaire_pk = self.kwargs.get("formulaire_pk")
+        formulaire = get_object_or_404(Formulaire, pk=formulaire_pk)
+
+        serializer.save(formulaire=formulaire)
+
+
+class AllFormulairesListAPIView(generics.ListAPIView):
+    queryset = Formulaire.objects.all().order_by("id")
+    serializer_class = serializers.AllFormulairesDetail
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+
+class BeneficiaireViewSet(viewsets.ModelViewSet):
+    """Manage Beneficiaire in the database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = Beneficiaire.objects.all()
+    serializer_class = serializers.BeneficiaireSerializer
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+        queryset = Beneficiaire.objects.all().order_by("-cin")
+        return queryset

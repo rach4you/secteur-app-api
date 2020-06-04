@@ -9,6 +9,7 @@ from core.models import Formulaire, Entreprise, Secteur, Filiere, Operateur, Dev
 
 from formulaire.serializers import FormulaireSerializer, FormulaireDetailSerializer
 
+from datetime import datetime
 
 FORMULAIRES_URL = reverse('formulaire:formulaire-list')
 
@@ -44,7 +45,7 @@ def sample_user(email='test@anapec.org', password='testpass'):
 
 
 def sample_formulaire(user, **params):
-    """Create and return a sample recipe"""
+    """Create and return a sample formulaire"""
     defaults = {
             "code": "0001",
             "theme": "theme",
@@ -131,3 +132,30 @@ class PrivateFormulaireApiTests(TestCase):
 
         serializer = FormulaireDetailSerializer(formulaire)
         self.assertEqual(res.data, serializer.data)
+
+    def test_create_basic_formulaire(self):
+        """Test creating formulaire"""
+        entreprise = sample_entreprise('Empressa')
+        operateur = sample_operateur('operateur1')
+        devise = sample_devise('MAD')
+        secteur = sample_secteur('Offshoring')
+        filiere = sample_filiere(secteur=sample_secteur(secteur='Offshoring'), filiere='Management')
+        payload = {
+            "code": "0001",
+            "theme": "theme",
+            "lieu": "casablanca",
+            "date_depot": "2020-06-10",
+            "date_demarrage": "2020-06-10",
+            "date_achevement": "2020-06-10",
+            "montant": 30000.0,
+            "entreprise": entreprise.id,
+            "operateur": operateur.id,
+            "devise": devise.id,
+            "secteur": secteur.id,
+            "filiere": filiere.id,
+        }
+        res = self.client.post(FORMULAIRES_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        formulaire = Formulaire.objects.get(id=res.data['id'])
+

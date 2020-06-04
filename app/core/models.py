@@ -134,3 +134,16 @@ class Module(models.Model):
 
     def __str__(self):
         return f"{self.formulaire}"
+
+class Beneficiaire(models.Model):
+    class Meta:
+        db_table = 'beneficiaires'
+
+    cin = models.CharField(max_length=300)
+    nom = models.CharField(max_length=300)
+    prenom = models.CharField(max_length=300)
+    tel = models.CharField(max_length=300, blank=True)
+    email = models.CharField(max_length=300, blank=True)
+    cnss = models.CharField(max_length=300, blank=True)
+    ancien = models.BooleanField(default=False)
+
