@@ -98,3 +98,28 @@ class CreditAlloue(models.Model):
                                 related_name="credit_alloue")
     def __str__(self):
         return f"{self.filiere}"
+
+
+class Formulaire(models.Model):
+    class Meta:
+        db_table = 'formulaires'
+    code = models.CharField(max_length=300)
+    theme = models.CharField(max_length=300)
+    lieu = models.CharField(max_length=300)
+    secteur = models.ForeignKey(Secteur, on_delete=models.DO_NOTHING)
+    filiere = models.ForeignKey(Filiere, on_delete=models.DO_NOTHING)
+    operateur = models.ForeignKey(Operateur, on_delete=models.DO_NOTHING)
+    entreprise = models.ForeignKey(Entreprise, on_delete=models.DO_NOTHING)
+    devise = models.ForeignKey(Devise, on_delete=models.DO_NOTHING)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    date_depot = models.DateField()
+    date_demarrage = models.DateField()
+    date_achevement = models.DateField()
+    montant = models.FloatField()
+    competence = models.CharField(max_length=300, null=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    def __str__(self):
+        return f"{self.code}"

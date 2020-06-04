@@ -99,3 +99,33 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(credit_alloue), credit_alloue.filiere.filiere)
+
+    def test_formulaire_str(self):
+        """Test the Formulaire string representation"""
+        formulaire = models.Formulaire.objects.create(
+
+            user=sample_user(),
+            code='001',
+            theme='theme',
+            lieu='lieu',
+            date_depot='2020-04-06',
+            date_demarrage='2020-04-06',
+            date_achevement='2020-04-06',
+            montant=1000,
+            competence='competence',
+            entreprise=models.Entreprise.objects.create(
+                    raison_sociale='Empressa'),
+            operateur=models.Operateur.objects.create(
+                    operateur='operateur1'),
+            secteur=models.Secteur.objects.create(
+                secteur='Offshoring'),
+            filiere=models.Filiere.objects.create(
+                secteur=models.Secteur.objects.create(
+                    secteur='Offshoring'),
+                filiere='Management'
+            ),
+            devise =models.Devise.objects.create(
+                devise='MAD'),
+        )
+
+        self.assertEqual(str(formulaire), formulaire.code)

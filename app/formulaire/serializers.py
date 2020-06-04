@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire
 
 
 class EntrepriseSerializer(serializers.ModelSerializer):
@@ -49,3 +49,9 @@ class DeviseSerializer(serializers.ModelSerializer):
         model = Devise
         fields = ('id', 'devise')
         read_only_Fields = ('id',)
+
+class FormulaireSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Formulaire
+        fields = ('id', 'code', 'theme', 'lieu', 'date_depot', 'date_demarrage', 'date_achevement', 'montant', 'devise', 'competence', 'entreprise', 'operateur', 'secteur', 'filiere')

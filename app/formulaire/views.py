@@ -2,7 +2,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire
 
 from formulaire import serializers
 
@@ -112,3 +112,20 @@ class CreditAlloueViewSet(viewsets.GenericViewSet,
     def perform_create(self, serializer):
         """Create a new Filiere"""
         serializer.save()
+
+class FormulaireViewSet(viewsets.GenericViewSet,
+                 mixins.ListModelMixin,
+                 mixins.CreateModelMixin):
+    """Manage Formulaire in the database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = Formulaire.objects.all()
+    serializer_class = serializers.FormulaireSerializer
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+        return self.queryset.filter(user=self.request.user).order_by('-code')
+
+    def perform_create(self, serializer):
+        """Create a new formulaire"""
+        serializer.save(user=self.request.user)
