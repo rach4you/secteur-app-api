@@ -3,7 +3,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
 
-from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire
 
 from formulaire import serializers
 
@@ -180,4 +180,17 @@ class BeneficiaireViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
         queryset = Beneficiaire.objects.all().order_by("-cin")
+        return queryset
+
+
+class BeneficiaireFormulaireViewSet(viewsets.ModelViewSet):
+    """Manage BeneficiaireFormulaire in the database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = BeneficiaireFormulaire.objects.all()
+    serializer_class = serializers.BeneficiaireFormulaireSerializer
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+        queryset = BeneficiaireFormulaire.objects.all().order_by("-id")
         return queryset

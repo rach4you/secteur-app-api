@@ -86,7 +86,7 @@ class Filiere(models.Model):
                               on_delete=models.CASCADE,
                               related_name="filieres")
     def __str__(self):
-        return f"{self.filiere}"
+        return f"{self.secteur} ---> {self.filiere}"
 
 class CreditAlloue(models.Model):
     class Meta:
@@ -146,4 +146,26 @@ class Beneficiaire(models.Model):
     email = models.CharField(max_length=300, blank=True)
     cnss = models.CharField(max_length=300, blank=True)
     ancien = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.cin}"
+
+class BeneficiaireFormulaire(models.Model):
+    class Meta:
+        db_table = 'beneficiaire_formulaires'
+
+    diplome = models.CharField(max_length=300)
+    profil_bareme = models.CharField(max_length=300)
+    type = models.CharField(max_length=10)
+    contrat = models.CharField(max_length=10)
+    beneficier = models.BooleanField(default=False)
+    non_conforme = models.BooleanField(default=False)
+    engagement = models.FloatField()
+    consommation = models.FloatField()
+    date_dembauche = models.DateField()
+    beneficiaire = models.ForeignKey(Beneficiaire, on_delete=models.DO_NOTHING)
+    formulaire = models.ForeignKey(Formulaire, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.formulaire}"
 

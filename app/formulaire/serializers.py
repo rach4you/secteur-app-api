@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire
 
 
 class EntrepriseSerializer(serializers.ModelSerializer):
@@ -78,3 +78,14 @@ class BeneficiaireSerializer(serializers.ModelSerializer):
     class Meta:
         model = Beneficiaire
         fields = ('id', 'cin', 'nom', 'prenom', 'tel', 'email', 'cnss', 'ancien')
+
+class BeneficiaireFormulaireSerializer(serializers.ModelSerializer):
+    """Serialize a BeneficiaireFormulaire"""
+
+
+    class Meta:
+        model = BeneficiaireFormulaire
+        fields = (
+            'id', 'diplome', 'profil_bareme', 'type', 'contrat', 'beneficier', 'non_conforme', 'engagement', 'consommation', 'date_dembauche', 'beneficiaire', 'formulaire'
+        )
+        read_only_fields = ('id',)

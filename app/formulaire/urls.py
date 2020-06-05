@@ -14,6 +14,7 @@ router.register('credit_alloues', views.CreditAlloueViewSet)
 router.register('devises', views.DeviseViewSet)
 router.register('modules', views.ModuleViewSet)
 router.register('beneficiaires', views.BeneficiaireViewSet)
+router.register('beneficiaire_formulaires', views.BeneficiaireFormulaireViewSet)
 
 app_name = 'formulaire'
 
