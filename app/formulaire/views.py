@@ -3,7 +3,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
 
-from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire, Facture
 
 from formulaire import serializers
 
@@ -194,3 +194,43 @@ class BeneficiaireFormulaireViewSet(viewsets.ModelViewSet):
         """Return objects for the current authenticated user only"""
         queryset = BeneficiaireFormulaire.objects.all().order_by("-id")
         return queryset
+
+class BeneficiaireFormulaireCreateAPIView(generics.CreateAPIView):
+    queryset = BeneficiaireFormulaire.objects.all()
+    serializer_class = serializers.BeneficiaireFormulaireSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def perform_create(self, serializer):
+        formulaire_pk = self.kwargs.get("formulaire_pk")
+        formulaire = get_object_or_404(Formulaire, pk=formulaire_pk)
+
+        serializer.save(formulaire=formulaire)
+
+
+
+
+class FactureViewSet(viewsets.ModelViewSet):
+    """Manage BeneficiaireFormulaire in the database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = Facture.objects.all()
+    serializer_class = serializers.FactureSerializer
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+        queryset = Facture.objects.all().order_by("-id")
+        return queryset
+
+class FactureCreateAPIView(generics.CreateAPIView):
+    queryset = Facture.objects.all()
+    serializer_class = serializers.FactureSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def perform_create(self, serializer):
+        formulaire_pk = self.kwargs.get("formulaire_pk")
+        formulaire = get_object_or_404(Formulaire, pk=formulaire_pk)
+
+        serializer.save(formulaire=formulaire)
+

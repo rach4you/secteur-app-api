@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire, Facture
 
 
 class EntrepriseSerializer(serializers.ModelSerializer):
@@ -77,11 +77,12 @@ class BeneficiaireSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Beneficiaire
-        fields = ('id', 'cin', 'nom', 'prenom', 'tel', 'email', 'cnss', 'ancien')
+        fields = ('id', 'cin', 'nom', 'prenom', 'tel', 'email', 'cnss')
 
 class BeneficiaireFormulaireSerializer(serializers.ModelSerializer):
     """Serialize a BeneficiaireFormulaire"""
 
+    formulaire = FormulaireSerializer(read_only=True)
 
     class Meta:
         model = BeneficiaireFormulaire
@@ -89,3 +90,12 @@ class BeneficiaireFormulaireSerializer(serializers.ModelSerializer):
             'id', 'diplome', 'profil_bareme', 'type', 'contrat', 'beneficier', 'non_conforme', 'engagement', 'consommation', 'date_dembauche', 'beneficiaire', 'formulaire'
         )
         read_only_fields = ('id',)
+
+class FactureSerializer(serializers.ModelSerializer):
+
+    formulaire = FormulaireSerializer(read_only=True)
+
+    class Meta:
+        model = Facture
+       # exclude = ("formulaire",)
+        fields = ('id', 'num_facture', 'date_creation', 'mttc', 'taux', 'montant_dh', 'commentaire', 'formulaire')

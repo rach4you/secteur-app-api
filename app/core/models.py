@@ -145,7 +145,7 @@ class Beneficiaire(models.Model):
     tel = models.CharField(max_length=300, blank=True)
     email = models.CharField(max_length=300, blank=True)
     cnss = models.CharField(max_length=300, blank=True)
-    ancien = models.BooleanField(default=False)
+    ancien = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.cin}"
@@ -161,7 +161,7 @@ class BeneficiaireFormulaire(models.Model):
     beneficier = models.BooleanField(default=False)
     non_conforme = models.BooleanField(default=False)
     engagement = models.FloatField()
-    consommation = models.FloatField()
+    consommation = models.FloatField(default=0)
     date_dembauche = models.DateField()
     beneficiaire = models.ForeignKey(Beneficiaire, on_delete=models.DO_NOTHING)
     formulaire = models.ForeignKey(Formulaire, on_delete=models.CASCADE)
@@ -169,3 +169,18 @@ class BeneficiaireFormulaire(models.Model):
     def __str__(self):
         return f"{self.formulaire}"
 
+
+class Facture(models.Model):
+    class Meta:
+        db_table = 'facturations'
+
+    num_facture = models.CharField(max_length=100)
+    commentaire = models.CharField(max_length=300, blank=True)
+    mttc = models.FloatField()
+    montant_dh = models.FloatField(default=0)
+    taux = models.FloatField(default=0)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    formulaire = models.ForeignKey(Formulaire, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.num_facture}"

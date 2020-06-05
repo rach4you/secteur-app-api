@@ -15,11 +15,13 @@ router.register('devises', views.DeviseViewSet)
 router.register('modules', views.ModuleViewSet)
 router.register('beneficiaires', views.BeneficiaireViewSet)
 router.register('beneficiaire_formulaires', views.BeneficiaireFormulaireViewSet)
-
+router.register('factures', views.FactureViewSet)
 app_name = 'formulaire'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path("<int:formulaire_pk>/module/", views.ModuleCreateAPIView.as_view(), name="module-list"),
+    path("<int:formulaire_pk>/module/", views.ModuleCreateAPIView.as_view(), name="module-add"),
+    path("<int:formulaire_pk>/facture/", views.FactureCreateAPIView.as_view(), name="facture-add"),
+    path("<int:formulaire_pk>/engager/", views.BeneficiaireFormulaireCreateAPIView.as_view(), name="engager-add"),
     path("formulaires/all", views.AllFormulairesListAPIView.as_view(), name="formulaires-list"),
 ]
