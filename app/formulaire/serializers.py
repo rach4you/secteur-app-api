@@ -75,7 +75,7 @@ class BeneficiaireSerializer(serializers.ModelSerializer):
 class BeneficiaireFormulaireSerializer(serializers.ModelSerializer):
     """Serialize a BeneficiaireFormulaire"""
 
-    formulaire = FormulaireSerializer(read_only=True)
+    #formulaire = FormulaireSerializer(read_only=True)
 
     class Meta:
         model = BeneficiaireFormulaire
