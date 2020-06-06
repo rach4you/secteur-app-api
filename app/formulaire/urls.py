@@ -23,5 +23,8 @@ urlpatterns = [
     path("<int:formulaire_pk>/module/", views.ModuleCreateAPIView.as_view(), name="module-add"),
     path("<int:formulaire_pk>/facture/", views.FactureCreateAPIView.as_view(), name="facture-add"),
     path("<int:formulaire_pk>/engager/", views.BeneficiaireFormulaireCreateAPIView.as_view(), name="engager-add"),
-    path("formulaires/all", views.AllFormulairesListAPIView.as_view(), name="formulaires-list"),
+    path("all", views.AllFormulairesListAPIView.as_view(), name="formulaires-list"),
+    path("<int:formulaire_pk>/beneficiaires/", views.AllBeneficiaireFormulaireAPIView.as_view(), name="beneficiaires-list"),
+    path("<int:pk>/count_engager/", views.CountBeneficiaireViewSet.as_view(), name="count_engager-add"),
+    path("all/beneficiaires", views.AllBeneficiairesListAPIView.as_view(), name="beneficiaires-list"),
 ]

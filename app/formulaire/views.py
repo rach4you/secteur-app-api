@@ -1,8 +1,9 @@
 from rest_framework import viewsets, mixins, generics
+from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
-
+from rest_framework.response import Response
 from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire, Facture
 
 from formulaire import serializers
@@ -165,9 +166,16 @@ class ModuleCreateAPIView(generics.CreateAPIView):
 
 class AllFormulairesListAPIView(generics.ListAPIView):
     queryset = Formulaire.objects.all().order_by("id")
-    serializer_class = serializers.AllFormulairesDetail
+
+    serializer_class = serializers.AllFormulairesDetailSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+
+        return self.queryset.all()
+
 
 
 class BeneficiaireViewSet(viewsets.ModelViewSet):
@@ -233,4 +241,49 @@ class FactureCreateAPIView(generics.CreateAPIView):
         formulaire = get_object_or_404(Formulaire, pk=formulaire_pk)
 
         serializer.save(formulaire=formulaire)
+
+
+class AllBeneficiaireFormulaireAPIView(generics.ListAPIView):
+
+    queryset = BeneficiaireFormulaire.objects.all().order_by("id")
+    serializer_class = serializers.AllBeneficiaireFormulaireDetail
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+        formulaire_pk = self.kwargs.get("formulaire_pk")
+        formulaire = get_object_or_404(Formulaire, pk=formulaire_pk)
+
+        return self.queryset.filter(formulaire=formulaire).order_by('-id')
+
+
+class CountBeneficiaireViewSet(APIView):
+    """Test API ViewSet"""
+    queryset = BeneficiaireFormulaire.objects.all().order_by("id")
+    serializer_class = serializers.AllBeneficiaireFormulaireDetail
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk):
+        """Return a count beneficiaires."""
+
+        formulaire = get_object_or_404(Formulaire, pk=pk)
+        count = self.queryset.filter(formulaire=formulaire).count()
+        return Response({'count': count})
+
+
+
+class AllBeneficiairesListAPIView(generics.ListAPIView):
+    queryset = Beneficiaire.objects.all().order_by("cin")
+
+    serializer_class = serializers.AllBeneficiairesDetailSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+
+        return self.queryset.all()
+
 

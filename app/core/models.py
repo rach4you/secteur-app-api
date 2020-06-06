@@ -86,7 +86,7 @@ class Filiere(models.Model):
                               on_delete=models.CASCADE,
                               related_name="filieres")
     def __str__(self):
-        return f"{self.secteur} ---> {self.filiere}"
+        return f"{self.filiere}"
 
 class CreditAlloue(models.Model):
     class Meta:
@@ -163,8 +163,8 @@ class BeneficiaireFormulaire(models.Model):
     engagement = models.FloatField()
     consommation = models.FloatField(default=0)
     date_dembauche = models.DateField()
-    beneficiaire = models.ForeignKey(Beneficiaire, on_delete=models.DO_NOTHING)
-    formulaire = models.ForeignKey(Formulaire, on_delete=models.CASCADE)
+    beneficiaire = models.ForeignKey(Beneficiaire, on_delete=models.DO_NOTHING, related_name="formulaires")
+    formulaire = models.ForeignKey(Formulaire, on_delete=models.CASCADE, related_name="beneficiaires")
 
     def __str__(self):
         return f"{self.formulaire}"
@@ -180,7 +180,7 @@ class Facture(models.Model):
     montant_dh = models.FloatField(default=0)
     taux = models.FloatField(default=0)
     date_creation = models.DateTimeField(auto_now_add=True)
-    formulaire = models.ForeignKey(Formulaire, on_delete=models.CASCADE)
+    formulaire = models.ForeignKey(Formulaire, on_delete=models.CASCADE, related_name="facture")
 
     def __str__(self):
         return f"{self.num_facture}"
