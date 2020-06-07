@@ -180,6 +180,7 @@ class Facture(models.Model):
     montant_dh = models.FloatField(default=0)
     taux = models.FloatField(default=0)
     date_creation = models.DateTimeField(auto_now_add=True)
+    date_facture = models.DateField(default=None)
     formulaire = models.ForeignKey(Formulaire, on_delete=models.CASCADE, related_name="facture")
 
     def __str__(self):

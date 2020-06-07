@@ -97,7 +97,7 @@ class FactureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Facture
        # exclude = ("formulaire",)
-        fields = ('id', 'num_facture', 'date_creation', 'mttc', 'taux', 'montant_dh', 'commentaire', 'formulaire')
+        fields = ('id', 'num_facture', 'date_creation', 'mttc', 'taux', 'montant_dh', 'commentaire', 'formulaire','date_facture')
 
 
 
@@ -117,7 +117,7 @@ class FactureDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Facture
-        fields = ('id', 'num_facture', 'date_creation', 'mttc', 'taux', 'montant_dh', 'commentaire')
+        fields = ('id', 'num_facture', 'date_creation', 'mttc', 'taux', 'montant_dh', 'commentaire','date_facture')
 
 
 class AllBeneficiaireFormulaireSerializer(serializers.ModelSerializer):
