@@ -21,6 +21,7 @@ app_name = 'formulaire'
 urlpatterns = [
     path('', include(router.urls)),
     path("<int:formulaire_pk>/module/", views.ModuleCreateAPIView.as_view(), name="module-add"),
+    path("<int:formulaire_pk>/modules/", views.ModuleListAPIView.as_view(), name="module-add"),
     path("<int:formulaire_pk>/facture/", views.FactureCreateAPIView.as_view(), name="facture-add"),
     path("<int:formulaire_pk>/engager/", views.BeneficiaireFormulaireCreateAPIView.as_view(), name="engager-add"),
     path("all", views.AllFormulairesListAPIView.as_view(), name="formulaires-list"),

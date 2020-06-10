@@ -163,6 +163,20 @@ class ModuleCreateAPIView(generics.CreateAPIView):
 
         serializer.save(formulaire=formulaire)
 
+class ModuleListAPIView(generics.ListAPIView):
+    queryset = Module.objects.all()
+
+    serializer_class = serializers.ModuleSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+        formulaire_pk = self.kwargs.get("formulaire_pk")
+        formulaire = get_object_or_404(Formulaire, pk=formulaire_pk)
+
+        return self.queryset.filter(formulaire=formulaire).order_by('id')
+
 
 class AllFormulairesListAPIView(generics.ListAPIView):
     queryset = Formulaire.objects.all().order_by("-id")
