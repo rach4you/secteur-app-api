@@ -25,6 +25,8 @@ urlpatterns = [
     path("<int:formulaire_pk>/engager/", views.BeneficiaireFormulaireCreateAPIView.as_view(), name="engager-add"),
     path("all", views.AllFormulairesListAPIView.as_view(), name="formulaires-list"),
     path("<int:formulaire_pk>/beneficiaires/", views.AllBeneficiaireFormulaireAPIView.as_view(), name="beneficiaires-list"),
-    path("<int:pk>/count_engager/", views.CountBeneficiaireViewSet.as_view(), name="count_engager-add"),
+    path("count/", views.CountBeneficiaireViewSet.as_view(), name="count"),
     path("all/beneficiaires", views.AllBeneficiairesListAPIView.as_view(), name="beneficiaires-list"),
+    path("dernier_formulaire/", views.DernierFormulairesDetailAPIView.as_view(), name="dernier_formulaire-list"),
+    path("user_formulaires/", views.AllFormulairesUserListAPIView.as_view(), name="user_formulaires-list"),
 ]

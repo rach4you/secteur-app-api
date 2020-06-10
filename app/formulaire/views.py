@@ -19,7 +19,7 @@ class EntrepriseViewSet(viewsets.GenericViewSet,
     serializer_class = serializers.EntrepriseSerializer
 
     def get_queryset(self):
-        queryset = Entreprise.objects.all().order_by("-raison_sociale")
+        queryset = Entreprise.objects.all().order_by("id")
         return queryset
 
     def perform_create(self, serializer):
@@ -37,7 +37,7 @@ class OperateurViewSet(viewsets.GenericViewSet,
     serializer_class = serializers.OperateurSerializer
 
     def get_queryset(self):
-        queryset = Operateur.objects.all().order_by("-operateur")
+        queryset = Operateur.objects.all().order_by("id")
         return queryset
 
     def perform_create(self, serializer):
@@ -55,7 +55,7 @@ class SecteurViewSet(viewsets.GenericViewSet,
     serializer_class = serializers.SecteurSerializer
 
     def get_queryset(self):
-        queryset = Secteur.objects.all().order_by("-secteur")
+        queryset = Secteur.objects.all().order_by("id")
         return queryset
 
     def perform_create(self, serializer):
@@ -73,7 +73,7 @@ class DeviseViewSet(viewsets.GenericViewSet,
     serializer_class = serializers.DeviseSerializer
 
     def get_queryset(self):
-        queryset = Devise.objects.all().order_by("-devise")
+        queryset = Devise.objects.all().order_by("id")
         return queryset
 
     def perform_create(self, serializer):
@@ -90,7 +90,7 @@ class FiliereViewSet(viewsets.GenericViewSet,
     serializer_class = serializers.FiliereSerializer
 
     def get_queryset(self):
-        queryset = Filiere.objects.all().order_by("-id")
+        queryset = Filiere.objects.all().order_by("id")
         return queryset
 
     def perform_create(self, serializer):
@@ -108,7 +108,7 @@ class CreditAlloueViewSet(viewsets.GenericViewSet,
     serializer_class = serializers.CreditAlloueSerializer
 
     def get_queryset(self):
-        queryset = CreditAlloue.objects.all().order_by("-id")
+        queryset = CreditAlloue.objects.all().order_by("id")
         return queryset
 
     def perform_create(self, serializer):
@@ -126,7 +126,7 @@ class FormulaireViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
-        return self.queryset.filter(user=self.request.user).order_by('-code')
+        return self.queryset.filter(user=self.request.user).order_by('-id')
 
     def get_serializer_class(self):
         """Return appropriate serializer class"""
@@ -148,7 +148,7 @@ class ModuleViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ModuleSerializer
 
     def get_queryset(self):
-        queryset = Module.objects.all().order_by("-id")
+        queryset = Module.objects.all().order_by("id")
         return queryset
 
 class ModuleCreateAPIView(generics.CreateAPIView):
@@ -165,7 +165,7 @@ class ModuleCreateAPIView(generics.CreateAPIView):
 
 
 class AllFormulairesListAPIView(generics.ListAPIView):
-    queryset = Formulaire.objects.all().order_by("id")
+    queryset = Formulaire.objects.all().order_by("-id")
 
     serializer_class = serializers.AllFormulairesDetailSerializer
     authentication_classes = (TokenAuthentication,)
@@ -187,8 +187,12 @@ class BeneficiaireViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
-        queryset = Beneficiaire.objects.all().order_by("-cin")
+        queryset = Beneficiaire.objects.all().order_by("cin")
         return queryset
+
+    def perform_create(self, serializer):
+        """Create a new formulaire"""
+        serializer.save(user=self.request.user)
 
 
 class BeneficiaireFormulaireViewSet(viewsets.ModelViewSet):
@@ -200,7 +204,7 @@ class BeneficiaireFormulaireViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
-        queryset = BeneficiaireFormulaire.objects.all().order_by("-id")
+        queryset = BeneficiaireFormulaire.objects.all().order_by("id")
         return queryset
 
 class BeneficiaireFormulaireCreateAPIView(generics.CreateAPIView):
@@ -229,6 +233,9 @@ class FactureViewSet(viewsets.ModelViewSet):
         """Return objects for the current authenticated user only"""
         queryset = Facture.objects.all().order_by("-id")
         return queryset
+    def perform_create(self, serializer):
+        """Create a new formulaire"""
+        serializer.save(user=self.request.user)
 
 class FactureCreateAPIView(generics.CreateAPIView):
     queryset = Facture.objects.all()
@@ -258,19 +265,7 @@ class AllBeneficiaireFormulaireAPIView(generics.ListAPIView):
         return self.queryset.filter(formulaire=formulaire).order_by('-id')
 
 
-class CountBeneficiaireViewSet(APIView):
-    """Test API ViewSet"""
-    queryset = BeneficiaireFormulaire.objects.all().order_by("id")
-    serializer_class = serializers.AllBeneficiaireFormulaireDetail
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
 
-    def get(self, request, pk):
-        """Return a count beneficiaires."""
-
-        formulaire = get_object_or_404(Formulaire, pk=pk)
-        count = self.queryset.filter(formulaire=formulaire).count()
-        return Response({'count': count})
 
 
 
@@ -287,3 +282,43 @@ class AllBeneficiairesListAPIView(generics.ListAPIView):
         return self.queryset.all()
 
 
+class CountBeneficiaireViewSet(APIView):
+    """Test API ViewSet"""
+    queryset = Beneficiaire.objects.all()
+    queryset_formulaire = Formulaire.objects.all()
+    queryset_facture = Facture.objects.all()
+    #serializer_class = serializers.AllBeneficiaireFormulaireDetail
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        """Return a count beneficiaires."""
+
+        count_beneficiaire = self.queryset.filter(user=self.request.user).count()
+        count_formulaire = self.queryset_formulaire.filter(user=self.request.user).count()
+        count_facture = self.queryset_facture.filter(user=self.request.user).count()
+        return Response({'count_beneficiaire': count_beneficiaire, 'count_formulaire': count_formulaire , 'count_facture': count_facture, 'count_payer': 0 })
+
+
+class DernierFormulairesDetailAPIView(generics.ListAPIView):
+    queryset = Formulaire.objects.all().order_by("-id")
+
+    serializer_class = serializers.DernierFormulairesDetail
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+        return self.queryset.filter(user=self.request.user)[:3]
+
+class AllFormulairesUserListAPIView(generics.ListAPIView):
+    queryset = Formulaire.objects.all().order_by("-id")
+
+    serializer_class = serializers.AllFormulairesDetailSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+
+        return self.queryset.filter(user=self.request.user)

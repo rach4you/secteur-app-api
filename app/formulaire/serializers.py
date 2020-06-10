@@ -70,7 +70,7 @@ class BeneficiaireSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Beneficiaire
-        fields = ('id', 'cin', 'nom', 'prenom', 'tel', 'email', 'cnss')
+        fields = ('id', 'cin', 'nom', 'prenom', 'tel', 'email', 'cnss','ancien')
 
 class BeneficiaireFormulaireSerializer(serializers.ModelSerializer):
     """Serialize a BeneficiaireFormulaire"""
@@ -216,5 +216,21 @@ class AllBeneficiairesDetailSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'cin', 'nom', 'prenom', 'tel', 'email', 'cnss', 'ancien','formulaires'
             )
+
+
+class DernierFormulairesDetail(serializers.ModelSerializer):
+
+    modules = ModuleSerializer(many=True, read_only=True)
+    engager = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Formulaire
+        fields = (
+        'id', 'code', 'theme', 'lieu', 'date_depot', 'date_demarrage', 'date_achevement', 'competence', 'entreprise', 'operateur',
+        'secteur', 'filiere', 'date_creation', 'montant', 'devise', 'modules', 'engager')
+        depth = 1
+
+    def get_engager(self, obj):
+        return BeneficiaireFormulaire.objects.all().filter(formulaire_id=obj.id).count()
 
 

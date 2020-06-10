@@ -119,8 +119,9 @@ class Formulaire(models.Model):
     competence = models.CharField(max_length=300, null=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
+        blank=True,
+        null=True, on_delete=models.DO_NOTHING)
+
     def __str__(self):
         return f"{self.code}"
 
@@ -146,6 +147,13 @@ class Beneficiaire(models.Model):
     email = models.CharField(max_length=300, blank=True)
     cnss = models.CharField(max_length=300, blank=True)
     ancien = models.BooleanField(default=True)
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True, on_delete=models.DO_NOTHING)
+
+
 
     def __str__(self):
         return f"{self.cin}"
@@ -182,6 +190,10 @@ class Facture(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
     date_facture = models.DateField(default=None)
     formulaire = models.ForeignKey(Formulaire, on_delete=models.CASCADE, related_name="facture")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return f"{self.num_facture}"
