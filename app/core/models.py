@@ -1,8 +1,18 @@
-
+import uuid
+import os
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
 from django.conf import settings
+
+
+
+def user_image_file_path(instance, filename):
+    """Generate file path for new user image"""
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+
+    return os.path.join('uploads/user/', filename)
 
 class UserManager(BaseUserManager):
 
@@ -33,10 +43,26 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+
+class Employe(models.Model):
+    """Entreprise to be used for a recipe"""
+    class Meta:
+        db_table = 'employes'
+
+    nom_employe = models.CharField(max_length=300)
+    prenom_employe = models.CharField(max_length=300)
+    tel = models.CharField(max_length=300, blank=True)
+    image = models.ImageField(null=True, upload_to=user_image_file_path)
+    user = models.OneToOneField(User,  on_delete=models.DO_NOTHING)
+    agence = models.CharField(max_length=300, blank=True)
+
+    def __str__(self):
+        return self.nom_employe
 
 class Entreprise(models.Model):
     """Entreprise to be used for a recipe"""
@@ -147,6 +173,7 @@ class Beneficiaire(models.Model):
     email = models.CharField(max_length=300, blank=True)
     cnss = models.CharField(max_length=300, blank=True)
     ancien = models.BooleanField(default=True)
+    date_creation = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -197,3 +224,16 @@ class Facture(models.Model):
 
     def __str__(self):
         return f"{self.num_facture}"
+
+
+
+class DiplomeFiliere(models.Model):
+    class Meta:
+        db_table = 'diplome_filieres'
+
+    diplome = models.CharField(max_length=100)
+    filiere = models.ForeignKey(Filiere,
+                                on_delete=models.DO_NOTHING,
+                                related_name="diplome_filiere")
+    def __str__(self):
+        return f"{self.filiere}"

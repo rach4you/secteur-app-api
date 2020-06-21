@@ -30,4 +30,7 @@ urlpatterns = [
     path("all/beneficiaires", views.AllBeneficiairesListAPIView.as_view(), name="beneficiaires-list"),
     path("dernier_formulaire/", views.DernierFormulairesDetailAPIView.as_view(), name="dernier_formulaire-list"),
     path("user_formulaires/", views.AllFormulairesUserListAPIView.as_view(), name="user_formulaires-list"),
+    path("facture_payer/", views.AllFormulairesPayerListAPIView.as_view(), name="facture_payer-list"),
+    path("user_beneficiaires/", views.AllBeneficiairesUserListAPIView.as_view(), name="user_beneficiaires-list"),
+    path("<int:filiere_pk>/profil_bareme/", views.DiplomeFiliereViewSet.as_view(), name="profil_bareme-list"),
 ]

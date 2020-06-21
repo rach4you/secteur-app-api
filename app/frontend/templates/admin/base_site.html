@@ -1,0 +1,21 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+  {% block extrahead %}
+        <link rel="shortcut icon" href="{% static 'favicon.ico'  %}" />
+
+    {% endblock %}
+
+{% block title %}
+ANAPEC Administration
+{% endblock %}
+
+{% block branding %}
+
+  <h1 id="head">
+    <img src="{% static 'logo.png' %}" alt="Anapec"  class="logo"> Administration
+  </h1>
+{% endblock %}
+{% block extrastyle %}
+  <link rel="stylesheet" href="{% static 'admin.css' %}">
+{% endblock %}

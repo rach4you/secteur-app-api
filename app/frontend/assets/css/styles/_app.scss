@@ -1,0 +1,40 @@
+
+
+
+@import "variables";
+@import "mixins";
+@import "reboot";
+@import "utilities/utilities";
+@import "../../../node_modules/react-quill/dist/quill.snow.css";
+@import "../../../node_modules/perfect-scrollbar/css/perfect-scrollbar.css";
+@import "../../../node_modules/react-vis/dist/style.css";
+@import "components/index";
+@import "layouts/index";
+@import "views/index";
+
+
+// Media print
+@media print {
+  body,
+  *,
+  html {
+   // visibility: hidden;
+  }
+  .ps {
+    overflow: scroll !important;
+    overflow-anchor: none;
+    -ms-overflow-style: none;
+    touch-action: auto;
+    -ms-touch-action: auto;
+  }
+  #print-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    * {
+      visibility: visible;
+    }
+  }
+}

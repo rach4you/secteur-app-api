@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire, Facture
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire, Facture, User, DiplomeFiliere
 
 
 class EntrepriseSerializer(serializers.ModelSerializer):
@@ -214,7 +214,7 @@ class AllBeneficiairesDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Beneficiaire
         fields = (
-            'id', 'cin', 'nom', 'prenom', 'tel', 'email', 'cnss', 'ancien','formulaires'
+            'id', 'cin', 'nom', 'prenom', 'tel', 'email', 'cnss', 'ancien', 'date_creation', 'formulaires'
             )
 
 
@@ -234,3 +234,9 @@ class DernierFormulairesDetail(serializers.ModelSerializer):
         return BeneficiaireFormulaire.objects.all().filter(formulaire_id=obj.id).count()
 
 
+
+
+class DiplomeFiliereSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiplomeFiliere
+        fields = ("id", "diplome","filiere")

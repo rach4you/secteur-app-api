@@ -1,0 +1,78 @@
+body {
+   /*background: url(assets/img/boule_agirhPub.png) no-repeat center center fixed;*/
+    -webkit-background: cover;
+    -moz-background: cover;
+    -o-background: cover;
+
+}
+
+.w-full_c {
+    width: 75%;
+}
+
+.w-full_cin {
+    width: 75%;
+}
+
+
+.item-enter {
+    opacity: 0;
+}
+.item-enter-active {
+    opacity: 1;
+    transition: opacity 1000ms ease-in;
+}
+.item-exit {
+    opacity: 1;
+}
+.item-exit-active {
+    opacity: 0;
+    transition: opacity 1000ms ease-in;
+}
+
+ .sidenav__hold .sidenav__user {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: .5rem 12px;
+    margin: 2rem 0;
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.05);
+}
+
+ .sidenav__hold .sidenav__user img {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+}
+ .sidenav__hold .sidenav__user .username {
+    font-weight: 300;
+    color: white;
+}
+.sidenav__hold .sidenav__user .user__menu {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: -4px;
+}
+
+.sidenav {
+    left: 0;
+}
+
+
+ .sidenav__hold .brand-area {
+    width: 90px;
+    padding: 13px 18px 13px 24px;
+}
+
+.sidenav__hold .brand-area .brand .brand__text {
+    font-weight: 700;
+    font-size: 1.125rem;
+}
+
+.username-photo img {
+    height: 10rem;
+    width: 10rem;
+    border-radius: 50%;
+}

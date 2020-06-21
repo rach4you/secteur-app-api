@@ -2,14 +2,13 @@ from django.contrib.auth import get_user_model, authenticate
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
-
-
+from employe.serializers import EmployeDetailSerializer
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for the users object"""
-
+    employe = EmployeDetailSerializer(read_only=True)
     class Meta:
         model = get_user_model()
-        fields = ('email', 'password', 'name')
+        fields = ('email', 'password', 'name', 'employe')
         extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
 
     def create(self, validated_data):
@@ -52,3 +51,12 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class UserImageSerializer(serializers.ModelSerializer):
+    """Serializer for uploading images to recipe"""
+
+    class Meta:
+        model = get_user_model()
+        fields = ('id', 'image')
+        read_only_fields = ('id',)

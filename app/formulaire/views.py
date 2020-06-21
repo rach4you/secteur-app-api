@@ -1,10 +1,11 @@
+
 from rest_framework import viewsets, mixins, generics
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
-from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire, Facture
+from core.models import Entreprise, Operateur, Secteur, Devise, Filiere, CreditAlloue, Formulaire, Module, Beneficiaire, BeneficiaireFormulaire, Facture, DiplomeFiliere
 
 from formulaire import serializers
 
@@ -336,3 +337,44 @@ class AllFormulairesUserListAPIView(generics.ListAPIView):
         """Return objects for the current authenticated user only"""
 
         return self.queryset.filter(user=self.request.user)
+
+
+
+class AllFormulairesPayerListAPIView(generics.ListAPIView):
+    queryset = Formulaire.objects.all().order_by("-id")
+
+    serializer_class = serializers.AllFormulairesDetailSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+
+        return self.queryset.filter(user=self.request.user).exclude(facture__isnull=True)
+
+
+class AllBeneficiairesUserListAPIView(generics.ListAPIView):
+    queryset = Beneficiaire.objects.all().order_by("cin")
+
+    serializer_class = serializers.AllBeneficiairesDetailSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Return objects for the current authenticated user only"""
+
+        return self.queryset.filter(user=self.request.user)
+
+
+class DiplomeFiliereViewSet(generics.ListAPIView):
+    """Manage DiplomeFiliere in the database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = DiplomeFiliere.objects.all()
+    serializer_class = serializers.DiplomeFiliereSerializer
+
+    def get_queryset(self):
+        filiere_pk = self.kwargs.get("filiere_pk")
+        filiere = get_object_or_404(Filiere, pk=filiere_pk)
+
+        return self.queryset.filter(filiere=filiere).order_by('id')
